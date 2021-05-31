@@ -9,7 +9,6 @@ public class Main {
 
     public static void main(String[] args) {
         TicTacToe.fillGrid(grid, Characters.Empty.getCharacter());
-        TicTacToe.displayGrid(grid);
 
         while (true) {
             System.out.println("Input command:");
@@ -23,6 +22,8 @@ public class Main {
                     System.out.println(badParameters);
                 }
             } else if (inputArray.length == 3) {
+                TicTacToe.displayGrid(grid);
+
                 if (inputArray[0].equalsIgnoreCase("start")) {
                     if (inputArray[1].matches("(user|easy)") && inputArray[2].matches("(user|easy)")) {
                         Player player1 = Factory.playerFactory(inputArray[1], grid, Characters.X.getCharacter());
@@ -40,8 +41,7 @@ public class Main {
                             }
                         }
 
-                        TicTacToe.winner(grid);
-                        break;
+                        System.out.println(TicTacToe.winner(grid));
                     } else {
                         System.out.println(badParameters);
                     }
