@@ -7,6 +7,8 @@ public class Factory {
                 return new User(grid, character);
             case "easy":
                 return new EasyAI(grid, character);
+            case "medium":
+                return new MediumAI(grid, character);
             default:
                 return null;
         }

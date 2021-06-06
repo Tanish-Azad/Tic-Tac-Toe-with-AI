@@ -28,11 +28,11 @@ public class TicTacToe {
     public static void displayGrid(char[][] grid) {
         System.out.println("---------");
 
-        for (int i = 0; i < 3; i++) {
+        for (char[] chars : grid) {
             System.out.print("| ");
 
-            for (int j = 0; j < 3; j++) {
-                System.out.print(grid[i][j] + " ");
+            for (int j = 0; j < grid.length; j++) {
+                System.out.print(chars[j] + " ");
             }
 
             System.out.println("|");
@@ -48,20 +48,21 @@ public class TicTacToe {
     public static boolean isGameFinished(char[][] grid) {
         int blanks = 0;
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (grid[i][j] == Characters.Empty.getCharacter()) blanks++;
+        for (char[] characters : grid) {
+            for (char character : characters) {
+                if (character == Characters.Empty.getCharacter()) blanks++;
             }
         }
 
-        if (winner(grid).equalsIgnoreCase("X wins")) {
+        if (blanks <= 0) {
             return true;
-        } else if (winner(grid).equalsIgnoreCase("O wins")) {
+        } else if (winner(grid).equalsIgnoreCase("X wins")) {
             return true;
-        } else return (winner(grid).equalsIgnoreCase("Draw") && blanks == 0);
+        } else {
+            return winner(grid).equalsIgnoreCase("O wins");
+        }
     }
 
-    // I know this looks ugly someone please help me to fix this
     public static String winner(char[][] grid) {
         boolean xWins = false,
                 oWins = false;
