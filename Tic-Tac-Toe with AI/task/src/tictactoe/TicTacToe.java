@@ -2,22 +2,6 @@ package tictactoe;
 
 import java.util.Arrays;
 
-enum Characters {
-    Empty(' '),
-    X('X'),
-    O('O');
-
-    private final char character;
-
-    Characters(char character) {
-        this.character = character;
-    }
-
-    public char getCharacter() {
-        return character;
-    }
-}
-
 public class TicTacToe {
     public static void fillGrid(char[][] grid, char character) {
         for (char[] chars : grid) {
@@ -56,10 +40,10 @@ public class TicTacToe {
 
         if (blanks <= 0) {
             return true;
-        } else if (winner(grid).equalsIgnoreCase("X wins")) {
+        } else if (winner(grid).equalsIgnoreCase(Characters.X.getCharacter() + " wins")) {
             return true;
         } else {
-            return winner(grid).equalsIgnoreCase("O wins");
+            return winner(grid).equalsIgnoreCase(Characters.O.getCharacter() + " wins");
         }
     }
 
@@ -103,5 +87,9 @@ public class TicTacToe {
         } else {
             return "Draw";
         }
+    }
+
+    public static char opponentCharacter(char playerCharacter) {
+        return playerCharacter == Characters.X.getCharacter() ? Characters.O.getCharacter() : Characters.X.getCharacter();
     }
 }

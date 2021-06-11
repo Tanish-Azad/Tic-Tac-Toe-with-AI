@@ -1,5 +1,7 @@
 package tictactoe;
 
+import tictactoe.Players.Player;
+
 import java.util.Scanner;
 
 public class Main {
@@ -29,23 +31,22 @@ public class Main {
                     Player player1 = Factory.playerFactory(inputArray[1], grid, Characters.X.getCharacter());
                     Player player2 = Factory.playerFactory(inputArray[2], grid, Characters.O.getCharacter());
 
-                    boolean run = true;
-                    while (run) {
+                    while (!(TicTacToe.isGameFinished(grid))) {
                         if (player1 != null) {
-                            player1.play();
+                            player1.makeMove();
                             TicTacToe.displayGrid(grid);
                         } else {
                             System.out.println(badParameters);
                         }
 
-                        if (player2 != null) {
-                            player2.play();
-                            TicTacToe.displayGrid(grid);
-                        } else {
-                            System.out.println(badParameters);
+                        if (!TicTacToe.isGameFinished(grid)) {
+                            if (player2 != null) {
+                                player2.makeMove();
+                                TicTacToe.displayGrid(grid);
+                            } else {
+                                System.out.println(badParameters);
+                            }
                         }
-
-                        run = !(TicTacToe.isGameFinished(grid));
                     }
 
                     System.out.println(TicTacToe.winner(grid));

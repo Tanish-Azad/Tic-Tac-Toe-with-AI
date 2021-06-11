@@ -1,5 +1,10 @@
 package tictactoe;
 
+import tictactoe.Players.EasyAI;
+import tictactoe.Players.MediumAI;
+import tictactoe.Players.Player;
+import tictactoe.Players.User;
+
 public class Factory {
     public static Player playerFactory(String type, char[][] grid, char character) {
         switch (type) {
