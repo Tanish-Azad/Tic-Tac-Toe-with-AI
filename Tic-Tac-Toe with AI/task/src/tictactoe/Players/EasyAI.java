@@ -13,10 +13,10 @@ public class EasyAI extends Player {
     public void makeMove() {
         System.out.println("Making move level \"easy\"");
 
-        easyAIMove(super.getGrid(), super.getCharacter());
+        this.randomMove(super.getGrid(), super.getCharacter());
     }
 
-    protected void easyAIMove(char[][] grid, char character) {
+    protected void randomMove(char[][] grid, char character) {
         while (true) {
             Random random = new Random();
 

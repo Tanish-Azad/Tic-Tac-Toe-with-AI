@@ -12,34 +12,66 @@ public class MediumAI extends EasyAI {
     public void makeMove() {
         System.out.println("Making move level \"medium\"");
 
-        int[] rowAndColumn = blockOrComplete(super.getGrid(), super.getCharacter());
-        if (rowAndColumn[0] != -1 && rowAndColumn[1] != -1) {
-            super.getGrid()[rowAndColumn[0]][rowAndColumn[1]] = super.getCharacter();
-            return;
+        if (this.canBlockOrComplete(super.getGrid(), super.getCharacter())) {
+            this.blockOrComplete(super.getGrid(), super.getCharacter());
+        } else {
+            super.randomMove(super.getGrid(), super.getCharacter());
         }
-        
-        rowAndColumn = blockOrComplete(super.getGrid(), TicTacToe.opponentCharacter(super.getCharacter()));
-        if (rowAndColumn[0] != -1 && rowAndColumn[1] != -1) {
-            super.getGrid()[rowAndColumn[0]][rowAndColumn[1]] = super.getCharacter();
-            return;
-        }
-
-        super.easyAIMove(super.getGrid(), super.getCharacter());
     }
 
-    private int[] blockOrComplete(char[][] grid, char character) {
-        for (int r = 0; r < 3; r++) {
-            for (int c = 0; c < 3; c++) {
-                if (grid[r][c] == Characters.Empty.getCharacter()) {
-                    grid[r][c] = character;
-                    if (!(TicTacToe.winner(grid).equals("Draw"))) {
-                        grid[r][c] = Characters.Empty.getCharacter();
-                        return new int[]{r, c};
+    protected boolean canBlockOrComplete(char[][] grid, char character) {
+        char[][] cloneGrid = new char[grid.length][grid.length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid.length; j++) {
+                cloneGrid[i][j] = grid[i][j];
+            }
+        }
+
+        char opponentCharacter = TicTacToe.opponentCharacter(character);
+
+        for (int i = 0; i < cloneGrid.length; i++) {
+            for (int j = 0; j < cloneGrid.length; j++) {
+                if (cloneGrid[i][j] == Characters.Empty.getCharacter()) {
+                    cloneGrid[i][j] = character;
+                    if (!(TicTacToe.winner(cloneGrid).equals("Draw"))) {
+                        return true;
                     }
-                    grid[r][c] = Characters.Empty.getCharacter();
+
+                    cloneGrid[i][j] = opponentCharacter;
+                    if (!(TicTacToe.winner(cloneGrid).equals("Draw"))) {
+                        return true;
+                    }
+
+                    cloneGrid[i][j] = Characters.Empty.getCharacter();
                 }
             }
         }
-        return new int[]{-1, -1};
+
+        return false;
+    }
+
+    protected void blockOrComplete(char[][] grid, char character) {
+        char opponentCharacter = TicTacToe.opponentCharacter(character);
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid.length; j++) {
+                if (grid[i][j] == Characters.Empty.getCharacter()) {
+                    grid[i][j] = character;
+                    if (TicTacToe.winner(grid).equals("Draw")) {
+                        grid[i][j] = Characters.Empty.getCharacter();
+                    } else {
+                        return;
+                    }
+
+                    grid[i][j] = opponentCharacter;
+                    if (TicTacToe.winner(grid).equals("Draw")) {
+                        grid[i][j] = Characters.Empty.getCharacter();
+                    } else {
+                        grid[i][j] = character;
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
