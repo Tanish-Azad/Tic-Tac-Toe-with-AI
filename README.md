@@ -9,6 +9,6 @@ Everybody remembers this paper-and-pencil game from childhood: Tic-Tac-Toe, also
 2. exit. To exit the game.
 
 Players:-
-  user. Human.
-  easy. Easy level AI.
-  medium. Medium level AI.
+1. user. Human.
+2. easy. Easy level AI.
+3. medium. Medium level AI.
