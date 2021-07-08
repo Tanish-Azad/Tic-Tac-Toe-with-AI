@@ -1,5 +1,8 @@
 package tictactoe;
 
+/**
+ * Contains the character to use
+ */
 public enum Characters {
     Empty(' '),
     X('X'),
