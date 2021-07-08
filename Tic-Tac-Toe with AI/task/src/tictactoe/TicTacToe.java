@@ -2,15 +2,38 @@ package tictactoe;
 
 import java.util.Arrays;
 
+/**
+ * Contains Useful methods
+ *
+ * Public static methods
+ */
 public class TicTacToe {
+    /**
+     * Fills the board with a character
+     *
+     * @param grid Game board
+     * @param character Character to fill in the board
+     */
     public static void fillGrid(char[][] grid, char character) {
+        // Loop through the board and change each element with the character
         for (char[] chars : grid) {
             Arrays.fill(chars, character);
         }
     }
 
+    /**
+     * Displays the board graphically
+     *
+     * @param grid Game board
+     */
     public static void displayGrid(char[][] grid) {
-        System.out.println("---------");
+        String line = "";
+
+        for (int i = 0; i < grid.length; i++) {
+            line += "---";
+        }
+
+        System.out.println(line);
 
         for (char[] chars : grid) {
             System.out.print("| ");
@@ -22,14 +45,19 @@ public class TicTacToe {
             System.out.println("|");
         }
 
-        System.out.println("---------");
+        System.out.println(line);
     }
 
-    public static boolean isOccupiedCoordinate(char[][] grid, int row, int column) {
-        return (!(grid[row][column] == Characters.Empty.getCharacter()));
-    }
-
+    /**
+     * Checks if the game is finished or not
+     *
+     * @param grid Game board
+     * @return a boolean which determines the game is finished or not
+     * true = Game is finished
+     * false = Game is not finished
+     */
     public static boolean isGameFinished(char[][] grid) {
+        // Stores the number of empty characters on the board
         int blanks = 0;
 
         for (char[] characters : grid) {
@@ -38,46 +66,77 @@ public class TicTacToe {
             }
         }
 
-        if (blanks <= 0) {
-            return true;
-        } else if (winner(grid).equalsIgnoreCase(Characters.X.getCharacter() + " wins")) {
+        if (blanks <= 0) { // If there is no more available slots, so the game is finished
             return true;
         } else {
-            return winner(grid).equalsIgnoreCase(Characters.O.getCharacter() + " wins");
+            // If someone wins then the game is finished
+            return (winner(grid).contains("wins"));
         }
     }
 
+    /**
+     * Finds who is the winner
+     *
+     * @param grid Game board
+     * @return A String
+     * "X wins" -> Player playing with the character X is the winner
+     * "O wins" -> Player playing with the character O is the winner
+     * "Draw" -> No one wins its a tie or game is not finished yet
+     */
     public static String winner(char[][] grid) {
         boolean xWins = false,
                 oWins = false;
 
-        int row1 = grid[0][0] + grid[0][1] + grid[0][2],
-            row2 = grid[1][0] + grid[1][1] + grid[1][2],
-            row3 = grid[2][0] + grid[2][1] + grid[2][2];
+        // Checks for rows and columns
+        for (int i = 0; i < grid.length; i++) {
+            int row = 0,
+                column = 0;
 
-        int col1 = grid[0][0] + grid[1][0] + grid[2][0],
-            col2 = grid[0][1] + grid[1][1] + grid[2][1],
-            col3 = grid[0][2] + grid[1][2] + grid[2][2];
+            for (int j = 0; j < grid.length; j++) {
+                row += grid[i][j];
+                column += grid[i][j];
+            }
 
-        int diagonal1 = grid[0][0] + grid[1][1] + grid[2][2],
-            diagonal2 = grid[0][2] + grid[1][1] + grid[2][0];
+            if (row == (Characters.X.getCharacter() * grid.length)) {
+                xWins = true;
+            } else if (row == (Characters.O.getCharacter() * grid.length)) {
+                oWins = true;
+            }
 
-        if (row1 == 264 || row2 == 264 || row3 == 264) {
-            xWins = true;
-        } else if (row1 == 237 || row2 == 237 || row3 == 237) {
-            oWins = true;
+            if (column == (Characters.X.getCharacter() * grid.length)) {
+                xWins = true;
+            } else if (column == (Characters.O.getCharacter() * grid.length)) {
+                oWins = true;
+            }
+
+            if (xWins || oWins) {
+                break;
+            }
         }
 
-        if (col1 == 264 || col2 == 264 || col3 == 264) {
-            xWins = true;
-        } else if (col1 == 237 || col2 == 237 || col3 == 237) {
-            oWins = true;
-        }
+        // Checks for diagonals
+        for (int i = 0; i < grid.length; i++) {
+            int diagonal1 = 0,
+                diagonal2 = 0;
 
-        if (diagonal1 == 264 || diagonal2 == 264) {
-            xWins = true;
-        } else if (diagonal1 == 237 || diagonal2 == 237) {
-            oWins = true;
+            diagonal1 += grid[i][i];
+            diagonal2 += grid[i][grid.length - 1 - i];
+
+            if (diagonal1 == (Characters.X.getCharacter() * grid.length)) {
+                xWins = true;
+            } else if (diagonal1 == (Characters.O.getCharacter() * grid.length)) {
+                oWins = true;
+            }
+
+            if (diagonal2 == (Characters.X.getCharacter() * grid.length)) {
+                xWins = true;
+            } else if (diagonal2 == (Characters.O.getCharacter() * grid.length)) {
+                oWins = true;
+            }
+
+            if (xWins || oWins) {
+                break;
+            }
         }
 
         if (xWins) {
@@ -89,7 +148,25 @@ public class TicTacToe {
         }
     }
 
-    public static char opponentCharacter(char playerCharacter) {
-        return playerCharacter == Characters.X.getCharacter() ? Characters.O.getCharacter() : Characters.X.getCharacter();
+    /**
+     * @param character Player character
+     * @return Opponent Character
+     */
+    public static char opponentCharacter(char character) {
+        return (character == Characters.X.getCharacter() ? Characters.O.getCharacter() : Characters.X.getCharacter());
+    }
+
+    /**
+     * @param grid Game board to copy
+     * @return Copied board
+     */
+    public static char[][] cloneGrid(char[][] grid) {
+        char[][] cloneGrid = new char[grid.length][grid[0].length];
+
+        for (int i = 0; i < grid.length; i++) {
+            System.arraycopy(grid[i], 0, cloneGrid[i], 0, grid[i].length);
+        }
+
+        return cloneGrid;
     }
 }

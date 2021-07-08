@@ -1,20 +1,28 @@
 package tictactoe;
 
-import tictactoe.Players.EasyAI;
-import tictactoe.Players.MediumAI;
-import tictactoe.Players.Player;
-import tictactoe.Players.User;
+import tictactoe.Players.*;
 
+/**
+ * Makes players
+ */
 public class Factory {
+    /**
+     * @param type Player type
+     * @param grid Game board
+     * @param character Player Character
+     * @return Player of the wanted type
+     */
     public static Player playerFactory(String type, char[][] grid, char character) {
         switch (type) {
-            case "user":
+            case "user": // Human player
                 return new User(grid, character);
-            case "easy":
+            case "easy": // Easy AI
                 return new EasyAI(grid, character);
-            case "medium":
+            case "medium": // Medium AI
                 return new MediumAI(grid, character);
-            default:
+            case "hard": // Hard AI
+                return new HardAI(grid, character);
+            default: // No such player, return null
                 return null;
         }
     }
