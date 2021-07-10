@@ -12,3 +12,4 @@ Players:-
 1. user. Human.
 2. easy. Easy level AI.
 3. medium. Medium level AI.
+4. hard. Hard level AI.
